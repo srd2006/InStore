@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Обновление товара</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { background-color: #f4f6fb; }
+        .card { border-radius: 15px; border: none; }
+        .header-bg { background-color: #334b75; color: white; border-radius: 15px 15px 0 0; }
+        .btn-main { background-color: #334b75; color: white; }
+        .btn-main:hover { background-color: #2a3d61; }
+        label { font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow">
+                <div class="card-header header-bg text-center">
+                    <h4>Обновление товара</h4>
+                </div>
+
+                <div class="card-body">
+                    <form th:action="@{/update_goods}" method="post">
+
+                        <!-- ID -->
+                        <input type="hidden" name="id" th:value="${stores.id}">
+
+                        <!-- Title -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Название</label>
+                            <input id="title" type="text" class="form-control" name="title"
+                                   th:value="${stores.title}" required>
+                        </div>
+
+                        <!-- Type -->
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Тип</label>
+                            <input id="type" type="text" class="form-control" name="type"
+                                   th:value="${stores.type}" required>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Описание</label>
+                            <textarea id="description" class="form-control" name="description"
+                                      rows="3" required th:text="${stores.description}"></textarea>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Цена</label>
+                            <input id="price" type="number" step="0.01" class="form-control" name="price"
+                                   th:value="${stores.price}" required>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="/" class="btn btn-outline-secondary">Назад</a>
+                            <button type="submit" class="btn btn-main">Сохранить</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
