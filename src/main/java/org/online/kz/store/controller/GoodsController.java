@@ -62,11 +62,7 @@ public class GoodsController {
     }
 
 
-    @GetMapping(value = "/purchase-history")
-    public String getPurchaseHistory(Model model) {
-        model.addAttribute("store", goodsService.getAllGoods());
-        return "purchase-history";
-    }
+
 
 
 }

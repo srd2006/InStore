@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Service("mainCart")
 @RequiredArgsConstructor
@@ -24,10 +25,10 @@ public class CartServiceImpl implements CartService {
     private final UsersRepository usersRepository;
 
 
-    @Override
-    public List<Cart> getAllCart() {
-        return cartRepository.getAllCarts();
-    }
+//    @Override
+//    public List<Cart> getAllCart() {
+//        return cartRepository.getAllCarts();
+//    }
 
     @Override
     public Cart getCartById(int cartId) {
@@ -54,35 +55,58 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public void addGoodsById(long id) {
-        Goods savedGoods = goodsRepository.getGoodsById(id);
+    public void addGoodsById(long goodsId) {
 
-        // Получаем текущего пользователя через Spring Security
+
+        Goods goods = goodsRepository.findById((int) goodsId)
+                .orElseThrow(() -> new RuntimeException("Товар не найден"));
+
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+        String username = Objects.requireNonNull(auth).getName();
 
-        Users managedUser = usersRepository.findByFullUserName(username);
+        Users user = usersRepository.findByFullUserName(username);
+        if (user == null) {
+            throw new RuntimeException("Пользователь не найден");
+        }
+
 
         Cart cart = new Cart();
-        cart.setType(savedGoods.getType());
-        cart.setTitle(savedGoods.getTitle());
-        cart.setDescription(savedGoods.getDescription());
-        cart.setPrice(savedGoods.getPrice());
-        cart.setUser(managedUser);
+        cart.setType(goods.getType());
+        cart.setTitle(goods.getTitle());
+        cart.setDescription(goods.getDescription());
+        cart.setPrice(goods.getPrice());
+        cart.setUser(user);
+
 
         cartRepository.save(cart);
     }
 
+
     @Override
-    public Integer totalPrice(Cart cart) {
-        List<Cart> carts = cartRepository.getCartsByPrice(cart.getPrice());
+    public List<Cart> getMyCart() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = Objects.requireNonNull(auth).getName();
 
-        BigDecimal totalPrice = new BigDecimal(0);
-        for (Cart cart1 : carts) {
-            totalPrice = totalPrice.add(cart1.getPrice());
+        Users user = usersRepository.findByFullUserName(username);
+
+        return cartRepository.findByUserId(user.getId());
+    }
+
+    @Override
+    public BigDecimal totalPrice() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = Objects.requireNonNull(auth).getName();
+
+        Users user = usersRepository.findByFullUserName(username);
+
+        List<Cart> carts = cartRepository.findByUserId(user.getId());
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (Cart cart : carts) {
+            total = total.add(cart.getPrice());
         }
-
-
-        return totalPrice.intValue();
+        return total;
     }
 }

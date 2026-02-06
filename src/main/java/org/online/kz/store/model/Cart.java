@@ -34,7 +34,7 @@ public class Cart {
     @Column
     private BigDecimal price;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Users user;
 
     @OneToMany

@@ -14,7 +14,7 @@ public interface UserService {
 
     Users getUserByEmailPasswordAndUserPassword(String email, String password);
 
-    void changePassword(String password, String newPassword, String reNewPassword);
+    void changePassword(String email,String password, String newPassword, String reNewPassword);
 
     Users getCurrentUser();
 

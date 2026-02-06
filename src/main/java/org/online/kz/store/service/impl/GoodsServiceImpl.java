@@ -12,8 +12,9 @@ import java.util.List;
 @Service(value = "mainGoodsService")
 @RequiredArgsConstructor
 public class GoodsServiceImpl implements GoodsService {
+
+
     private final GoodsRepository goodsRepository;
-    private final UsersRepository usersRepository;
 
     @Override
     public List<Goods> getAllGoods() {
@@ -27,8 +28,6 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void addGoods(Goods goods) {
-
-
         goodsRepository.save(goods);
     }
 

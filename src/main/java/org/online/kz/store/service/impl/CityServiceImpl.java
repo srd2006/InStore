@@ -20,10 +20,7 @@ public class CityServiceImpl implements CityService {
         return List.of();
     }
 
-//    @Override
-//    public List<City> getAllCities() {
-//        return cityRepository.findAll();
-//    }
+
 
     @Override
     public City addCity(City city) {

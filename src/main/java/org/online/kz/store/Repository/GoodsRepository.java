@@ -19,5 +19,5 @@ public interface GoodsRepository extends JpaRepository<Goods, Integer> {
 
 
 
-   Goods getGoodsById(long id);
+   void getGoodsById(long id);
 }

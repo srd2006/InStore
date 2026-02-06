@@ -16,9 +16,10 @@ public class CartController {
     private final CartService cartService;
 
 
-    @GetMapping(value = "/cart")
-    public String cart(Model model) {
-        model.addAttribute("cartItems", cartService.getAllCart());
+    @GetMapping("/cart")
+    public String cartPage(Model model) {
+        model.addAttribute("cartItems", cartService.getMyCart());
+        model.addAttribute("totalPrice", cartService.totalPrice());
         return "cart";
     }
 
@@ -46,15 +47,7 @@ public class CartController {
         return "redirect:/cart";
     }
 
-//    @GetMapping(value = "/cart")
-//    public String totalPrice(Model model) {
-//        model.addAttribute("totalPrice", totalPrice);
-//        return "redirect:/cart";
-//    }
 
-    @PostMapping(value = "/cart/checkout")
-    public String checkout(@RequestParam int id) {
-        return null;
-    }
+
 
 }

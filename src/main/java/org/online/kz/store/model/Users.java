@@ -51,15 +51,15 @@ public class Users implements UserDetails {
     private List<City> cities;
 
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Permission> permissions;
 
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Goods> goods;
 
     @Override
     public String getUsername() {
-        return userNumber;
+        return fullUserName;
     }
 
     @Override

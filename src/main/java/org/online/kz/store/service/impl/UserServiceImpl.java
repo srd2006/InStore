@@ -1,7 +1,6 @@
 package org.online.kz.store.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.online.kz.store.Repository.GoodsRepository;
 import org.online.kz.store.Repository.PermissionRepository;
 import org.online.kz.store.Repository.UsersRepository;
 import org.online.kz.store.dto.UserDto;
@@ -23,7 +22,6 @@ public class UserServiceImpl implements UserService {
 
 
     private final UsersRepository usersRepository;
-    private final GoodsRepository goodsRepository;
     private final PermissionRepository permissionRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final PasswordEncoder passwordEncoder;
@@ -35,26 +33,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(String oldPassword, String newPassword, String reNewPassword) {
+    public void changePassword(String email, String oldPassword, String newPassword, String reNewPassword) {
 
         if (!newPassword.equals(reNewPassword)) {
             throw new IllegalArgumentException("Пароли не совпадают");
         }
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
         Users user = usersRepository.findByUserEmail(email);
+        if (user == null) {
+            throw new IllegalArgumentException("Пользователь с таким email не найден");
+        }
+
+        if (user.getUserPassword() == null) {
+            throw new IllegalArgumentException("Пароль пользователя не задан");
+        }
 
         if (!bCryptPasswordEncoder.matches(oldPassword, user.getUserPassword())) {
             throw new IllegalArgumentException("Старый пароль неверный");
         }
 
-        user.setUserPassword(
-                bCryptPasswordEncoder.encode(newPassword)
-        );
-
+        user.setUserPassword(bCryptPasswordEncoder.encode(newPassword));
         usersRepository.save(user);
     }
 

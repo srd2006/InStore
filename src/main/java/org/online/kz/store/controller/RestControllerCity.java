@@ -140,12 +140,65 @@ public class RestControllerCity {
     }
 
     @PutMapping("/update-city")
-//    @Operation(summary = )
+    @Operation(summary = "Изменения", description = "Изменения  города по ID и код")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Город удалился", content = {
+                    @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = CityDTo.class))}),
+            @ApiResponse(responseCode = "400", description = "Такой город нет", content = {
+                    @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, examples = {
+                            @ExampleObject(value = """
+                                    
+                                    "status":400,
+                                    "title": "Problem Format",
+                                    "details": "INCORRECT FORMAT"
+                                    """)
+                    }, schema = @Schema(implementation = ErrorCityDto.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "Серверный ошибка", content = {
+                    @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, examples = {
+                            @ExampleObject("""
+                                    {
+                                             "status": 500,
+                                             "title": "INTERNAL ERROR",
+                                             "details": "SERVER FORMAT"
+                                     }
+                                    """)
+                    })
+            })
+
+    })
     public void updateCity(@RequestBody City city) {
         cityService.updateCity(city);
     }
 
     @PatchMapping("/update-patch-city")
+    @Operation(summary = "Изменения", description = "Изменения города по ID и код")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Город удалился", content = {
+                    @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = CityDTo.class))}),
+            @ApiResponse(responseCode = "400", description = "Такой город нет", content = {
+                    @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, examples = {
+                            @ExampleObject(value = """
+                                    
+                                    "status":400,
+                                    "title": "Problem Format",
+                                    "details": "INCORRECT FORMAT"
+                                    """)
+                    }, schema = @Schema(implementation = ErrorCityDto.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "Серверный ошибка", content = {
+                    @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, examples = {
+                            @ExampleObject("""
+                                    {
+                                             "status": 500,
+                                             "title": "INTERNAL ERROR",
+                                             "details": "SERVER FORMAT"
+                                     }
+                                    """)
+                    })
+            })
+
+    })
     public void updateCityPatch(@RequestParam int id, @RequestParam String cityCode) {
         cityService.updateCityPatch(id, cityCode);
     }

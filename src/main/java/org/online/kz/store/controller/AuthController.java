@@ -60,4 +60,19 @@ public class AuthController {
     }
 
 
+    @GetMapping(value = "/change-pass")
+    public String changePassPage() {
+        return "change_pass_page";
+    }
+
+
+    @PostMapping(value = "/change-pass")
+    public String changePass(@RequestParam String email,
+                             @RequestParam String oldPass,
+                             @RequestParam String newPass,
+                             @RequestParam String reNewPass) {
+
+        userService.changePassword(email, oldPass, newPass, reNewPass);
+        return "redirect:/login";
+    }
 }
