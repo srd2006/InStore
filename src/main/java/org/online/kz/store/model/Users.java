@@ -35,6 +35,9 @@ public class Users implements UserDetails {
     @Column(unique = true, nullable = false)
     private String userNumber;
 
+    @Column
+    private String userAddress;
+
     @Column(unique = true, nullable = false)
     private String userEmail;
 
@@ -44,8 +47,6 @@ public class Users implements UserDetails {
     @Transient
     private String rePassword;
 
-    @Column
-    private String userAddress;
 
     @ManyToMany
     private List<City> cities;

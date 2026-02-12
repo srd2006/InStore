@@ -9,6 +9,7 @@ import org.online.kz.store.model.Users;
 import org.online.kz.store.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -93,5 +94,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existUserByNumber(UserDto userDto) {
         return usersRepository.existsByUserNumber(userDto.getUserNumber());
+    }
+
+    @Override
+    public void setNewAddUsers(Users users) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = Objects.requireNonNull(auth).getName();
+
+        Users user = usersRepository.findByFullUserName(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Пользователь не найден");
+        }
+
+        Users existingUser = usersRepository.findByUserNumber(users.getUserNumber())
+                .orElse(null);
+
+        if (existingUser != null && existingUser.getId() != user.getId()) {
+            throw new RuntimeException("Этот номер уже используется");
+        }
+
+        user.setUserCity(users.getUserCity());
+        user.setUserEmail(users.getUserEmail());
+        user.setUserNumber(users.getUserNumber());
+
+        usersRepository.save(user);
     }
 }

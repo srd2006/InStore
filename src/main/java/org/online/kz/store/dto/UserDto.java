@@ -16,6 +16,10 @@ public class UserDto {
 
     private String userEmail;
 
+    private String address;
+
+    private String city;
+
     private String password;
 
     private String rePassword;

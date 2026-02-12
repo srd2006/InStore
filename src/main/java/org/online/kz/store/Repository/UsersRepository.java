@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 @Transactional
 public interface UsersRepository extends JpaRepository<Users, Integer> {
@@ -21,5 +23,11 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     boolean existsByUserNumber(String userNumber);
 
-     Users findByFullUserName(String username);
+    Users findByFullUserName(String username);
+
+    void findByUserCity(String city);
+
+    Optional<Users> findByUserNumber(String userNumber);
+
+    void findByUserAddress(String userAddress);
 }

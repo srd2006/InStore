@@ -22,4 +22,6 @@ public interface UserService {
 
     boolean existUserByNumber(UserDto userDto);
 
+    void setNewAddUsers(Users users);
+
 }

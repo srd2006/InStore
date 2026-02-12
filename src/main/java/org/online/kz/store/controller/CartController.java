@@ -2,18 +2,19 @@ package org.online.kz.store.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.online.kz.store.model.Users;
 import org.online.kz.store.service.CartService;
+import org.online.kz.store.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
 public class CartController {
+
     private final CartService cartService;
+    private final UserService userService;
 
 
     @GetMapping("/cart")
@@ -47,7 +48,11 @@ public class CartController {
         return "redirect:/cart";
     }
 
-
+    @PostMapping("/cart/change-address")
+    public String changeAddress(@ModelAttribute Users user) {
+        userService.setNewAddUsers(user);
+        return "redirect:/cart";
+    }
 
 
 }

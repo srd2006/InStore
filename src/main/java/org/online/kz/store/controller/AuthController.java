@@ -62,6 +62,7 @@ public class AuthController {
 
     @GetMapping(value = "/change-pass")
     public String changePassPage() {
+
         return "change_pass_page";
     }
 
@@ -70,8 +71,13 @@ public class AuthController {
     public String changePass(@RequestParam String email,
                              @RequestParam String oldPass,
                              @RequestParam String newPass,
-                             @RequestParam String reNewPass) {
+                             @RequestParam String reNewPass,
+                             Model model) {
 
+        if (!newPass.equals(reNewPass)) {
+            model.addAttribute("error", true);
+            return "change_pass_page";
+        }
         userService.changePassword(email, oldPass, newPass, reNewPass);
         return "redirect:/login";
     }
