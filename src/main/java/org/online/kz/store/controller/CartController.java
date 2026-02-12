@@ -2,6 +2,7 @@ package org.online.kz.store.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.online.kz.store.dto.AddressDto;
 import org.online.kz.store.model.Users;
 import org.online.kz.store.service.CartService;
 import org.online.kz.store.service.UserService;
@@ -49,8 +50,8 @@ public class CartController {
     }
 
     @PostMapping("/cart/change-address")
-    public String changeAddress(@ModelAttribute Users user) {
-        userService.setNewAddUsers(user);
+    public String changeAddress(@ModelAttribute AddressDto dto) {
+        userService.setNewAddUsers(dto);
         return "redirect:/cart";
     }
 

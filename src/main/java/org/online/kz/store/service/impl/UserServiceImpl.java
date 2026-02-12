@@ -3,6 +3,7 @@ package org.online.kz.store.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.online.kz.store.Repository.PermissionRepository;
 import org.online.kz.store.Repository.UsersRepository;
+import org.online.kz.store.dto.AddressDto;
 import org.online.kz.store.dto.UserDto;
 import org.online.kz.store.model.Permission;
 import org.online.kz.store.model.Users;
@@ -97,7 +98,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setNewAddUsers(Users users) {
+    public void setNewAddUsers(AddressDto addressDto) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = Objects.requireNonNull(auth).getName();
@@ -107,16 +108,19 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("Пользователь не найден");
         }
 
-        Users existingUser = usersRepository.findByUserNumber(users.getUserNumber())
+
+        Users existingUser = usersRepository
+                .findByUserNumber(addressDto.getUserNumber())
                 .orElse(null);
 
         if (existingUser != null && existingUser.getId() != user.getId()) {
             throw new RuntimeException("Этот номер уже используется");
         }
 
-        user.setUserCity(users.getUserCity());
-        user.setUserEmail(users.getUserEmail());
-        user.setUserNumber(users.getUserNumber());
+
+        user.setUserCity(addressDto.getUserCity());
+        user.setUserAddress(addressDto.getUserAddress());
+        user.setUserNumber(addressDto.getUserNumber());
 
         usersRepository.save(user);
     }

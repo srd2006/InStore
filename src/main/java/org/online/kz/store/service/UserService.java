@@ -1,6 +1,7 @@
 package org.online.kz.store.service;
 
 
+import org.online.kz.store.dto.AddressDto;
 import org.online.kz.store.dto.UserDto;
 import org.online.kz.store.model.Users;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,6 @@ public interface UserService {
 
     boolean existUserByNumber(UserDto userDto);
 
-    void setNewAddUsers(Users users);
+    void setNewAddUsers(AddressDto addressDto);
 
 }
