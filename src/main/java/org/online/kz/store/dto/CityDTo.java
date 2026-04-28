@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(name = "It's CityDto")
 public class CityDTo {
-    Integer id;
-    String gorod;
-    String cityCode;
+    private Integer id;
+    private String gorod;
+    private String cityCode;
 }

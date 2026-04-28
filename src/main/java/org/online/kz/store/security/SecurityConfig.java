@@ -54,7 +54,7 @@ public class SecurityConfig {
                                 .requestMatchers("/login", "/register", "/change-pass").permitAll()
                                 .requestMatchers("/add_goods").hasAnyRole("ADMIN", "SELLER")
                                 .requestMatchers("/cart", "/purchase-history").hasAnyRole("ADMIN", "USER")
-//
+
 
                                 .anyRequest().authenticated()
                 )

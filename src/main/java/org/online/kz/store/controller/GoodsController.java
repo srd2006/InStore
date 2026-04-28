@@ -7,6 +7,10 @@ import org.online.kz.store.service.GoodsService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 
 
 @org.springframework.stereotype.Controller
@@ -35,10 +39,31 @@ public class GoodsController {
         return "goods";
     }
 
-    @PostMapping("/add_goods") // http://localhost:8088/add_goods
-    public String addGoods(@ModelAttribute Goods goods) {
+    @PostMapping("/add_goods")
+    public String addGoods(@ModelAttribute Goods goods,
+                           @RequestParam("file") MultipartFile file) throws IOException {
+
+        if (!file.isEmpty()) {
+
+            String uploadDir = System.getProperty("user.dir") + "/uploads/";
+            File dir = new File(uploadDir);
+
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+            File destination = new File(uploadDir + fileName);
+
+            file.transferTo(destination); // 👈 теперь путь нормальный
+
+            goods.setImage(fileName);
+        }
+
         goodsService.addGoods(goods);
-        return "add_goods";
+
+        return "redirect:/";
     }
 
 
@@ -56,8 +81,10 @@ public class GoodsController {
 
 
     @PostMapping("/update_goods")
-    public String updateGoodsPost(@ModelAttribute Goods goods) {
-        goodsService.updateGoods(goods);
+    public String updateGoodsPost(@ModelAttribute Goods goods,
+                                  @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+
+        goodsService.updateGoods(goods, file);
         return "redirect:/";
     }
 

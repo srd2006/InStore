@@ -33,6 +33,10 @@ public class Goods {
     @Column
     private BigDecimal price;
 
+    @Column
+    private String image;
+
+
     @ManyToOne
     private Cart cart;
 

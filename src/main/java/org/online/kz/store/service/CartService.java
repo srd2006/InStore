@@ -20,7 +20,7 @@ public interface CartService {
 
     void addGoodsById(long id);
 
-    public List<Cart> getMyCart();
+    List<Cart> getMyCart();
 
     BigDecimal totalPrice();
 

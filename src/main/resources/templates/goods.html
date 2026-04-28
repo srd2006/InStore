@@ -49,8 +49,8 @@
 
         </ul>
         <form class="d-flex ms-auto" action="/search">
-            <input class="form-control me-2" type="search" name="word" placeholder="Поиск товаров" aria-label="Search"/>
-            <button class="btn btn-light" type="submit">Найти</button>
+            <input class="form-control me-2" type="search" name="word" placeholder="Поиск товаров">
+            <button class="btn btn-light">Найти</button>
         </form>
         <form class="d-flex ms-auto" action="/sign-out" method="post">
             <button type="submit" class="btn btn-danger">Sign-out</button>
@@ -66,6 +66,13 @@
         <!-- PRODUCT CARD -->
         <div class="col-md-4" th:each="stores : ${store}">
             <div class="card h-100 shadow-sm">
+
+                <!-- 🔥 ДОБАВЛЕНО ФОТО (НЕ УДАЛЕНО НИЧЕГО) -->
+                <img th:if="${stores.image != null}"
+                     th:src="@{'/uploads/' + ${stores.image}}"
+                     class="card-img-top"
+                     style="height:200px; object-fit:cover;">
+
                 <div class="card-body d-flex flex-column">
 
                     <h5 class="card-title" th:text="${stores.title}"></h5>
@@ -80,9 +87,10 @@
                                 <a class="btn btn-outline-secondary btn-sm"
                                    th:href="@{'/update_goods/' + ${stores.id}}">
                                     Подробнее
-                                </a></div>
+                                </a>
+                            </div>
+
                             <form th:action="@{/delete-goods}" method="post">
-                                <input type="hidden" th:csrf/>
                                 <input type="hidden" name="id" th:value="${stores.id}">
                                 <button sec:authorize="hasRole('ADMIN') or hasRole('SELLER')"
                                         class="btn btn-danger btn-sm" type="submit">
@@ -92,7 +100,7 @@
                             <div sec:authorize="hasRole('ADMIN') or hasRole('USER')">
                                 <form th:action="@{/buy/add}" method="post">
                                     <input type="hidden" name="id" th:value="${stores.id}">
-                                    <button class="btn btn-success btn-sm" type="submit">Купить</button>
+                                    <button class="btn btn-success btn-sm">Купить</button>
                                 </form>
                             </div>
                         </div>
